@@ -1,6 +1,8 @@
- 
+from collections import defaultdict 
+
 def init_replies (data_b=True, eliza_b=True,iesha_b=True):
-    all_replies=()
+    all_replies_dict=defaultdict(list)
+
     if data_b: # pairs copied from https://towardsdatascience.com/build-your-first-chatbot-using-python-nltk-5d07b027e727       
         # replaced [ with ( to match nltk example bots
         toward_data = (
@@ -79,8 +81,10 @@ def init_replies (data_b=True, eliza_b=True,iesha_b=True):
                 ("BBye take care. See you soon :) ","It was nice talking to you. See you soon :)")
             ),
         )
-        all_replies+=toward_data
+        for regex, responses in toward_data:
+            all_replies_dict[regex]=all_replies_dict[regex]+list(responses)
 
+ 
     if iesha_b: # pairs copied from  https://www.nltk.org/_modules/nltk/chat/iesha.html
         iesha=(
             (
@@ -182,7 +186,9 @@ def init_replies (data_b=True, eliza_b=True,iesha_b=True):
                 ),
             ),
         )
-        all_replies+=iesha
+        for regex, responses in iesha:
+            all_replies_dict[regex]=all_replies_dict[regex]+list(responses)
+
 
     if eliza_b:
         eliza = (
@@ -482,5 +488,9 @@ def init_replies (data_b=True, eliza_b=True,iesha_b=True):
                 ),
             ),
         )
-        all_replies += eliza
-    return all_replies
+        for regex, responses in eliza:
+            all_replies_dict[regex]=all_replies_dict[regex]+list(responses)
+
+    all_replies_tuple=tuple(all_replies_dict.items())
+
+    return all_replies_tuple
